@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>31 Reconnect</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <style>
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        
+        /* Swiper Custom Style */
+        .swiper { width: 100%; padding-top: 40px; padding-bottom: 60px; }
+        .swiper-slide {
+            background-position: center; background-size: cover;
+            width: 280px; height: 380px; border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        @media (min-width: 768px) { .swiper-slide { width: 320px; height: 450px; } }
+        .swiper-slide img, .swiper-slide video { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; }
+        .swiper-pagination-bullet-active { background: #1e3a8a !important; }
+
+        /* Timeline Styles */
+        .timeline-container { position: relative; }
+        .timeline-container::after {
+            content: ''; position: absolute; width: 2px; background-color: #e2e8f0;
+            top: 0; bottom: 0; left: 50%; margin-left: -1px;
+        }
+        @media screen and (max-width: 768px) {
+            .timeline-container::after { left: 31px; }
+        }
+
+        /* Spinner Loading */
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3); border-radius: 50%;
+            border-top: 3px solid white; width: 20px; height: 20px;
+            animation: spin 1s linear infinite; display: inline-block;
+            margin-right: 10px; vertical-align: middle;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        #modalBerhasil {
+            display: none; position: fixed; z-index: 100; inset: 0;
+            background: rgba(0, 0, 0, 0.75); align-items: center; justify-content: center; backdrop-filter: blur(4px);
+        }
+
+        .float-wa {
+            position: fixed; width: 60px; height: 60px; bottom: 40px; right: 40px;
+            background-color: #25d366; color: #FFF; border-radius: 50px;
+            text-align: center; font-size: 30px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            z-index: 100; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;
+        }
+        .float-wa:hover { transform: scale(1.1); background-color: #128c7e; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <a href="https://wa.me/6285715339897" target="_blank" class="float-wa">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <nav class="sticky top-0 z-50 glass border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-center md:justify-between h-20 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <img src="https://images2.imgbox.com/21/38/4owZGKej_o.png" alt="31 Reconnect Logo" class="h-10 md:h-12 w-auto object-contain">
+                </div>
+                
+                <div class="hidden md:flex flex-1 justify-center items-center space-x-8 font-medium text-sm">
+                    <a href="#beranda" class="hover:text-blue-600 transition">Beranda</a>
+                    <a href="#agenda" class="hover:text-blue-600 transition">Agenda</a>
+                    <a href="#galeri" class="hover:text-blue-600 transition">Galeri</a>
+                </div>
+
+                <!-- <div class="hidden md:flex items-center"> -->
+                    <!-- <a href="#daftar" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition font-bold shadow-md text-sm">Daftar Sekarang</a> -->
+                <!-- </div> -->
+            </div>
+        </div>
+    </nav>
+
+    <section id="beranda" class="relative h-[80vh] flex items-center justify-center text-center text-white overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images2.imgbox.com/af/b6/mhc4R5Ep_o.png" alt="Alumni" class="w-full h-full object-cover brightness-[0.35]">
+        </div>
+        <div class="relative z-10 px-4 max-w-4xl">
+            <h1 class="font-serif text-5xl md:text-7xl mb-6 tracking-tight leading-tight">Kembali Terhubung,<br>Kembali Pulang</h1>
+            <p class="text-lg md:text-2xl mb-10 font-light text-blue-50 leading-relaxed italic">
+                "Dari masa kapur tulis hingga era digital. Saatnya pulang dan merajut kembali kisah yang sempat tertunda."
+            </p>
+            <a href="#daftar" class="bg-yellow-500 hover:bg-yellow-600 text-blue-950 font-bold py-4 px-10 rounded-xl text-lg shadow-xl transition-transform hover:scale-105 inline-block">Mulai Merajut Kisah</a>
+        </div>
+    </section>
+
+    <section class="relative z-20 -mt-20 px-4">
+        <div class="max-w-6xl mx-auto bg-white rounded-[2rem] shadow-2xl p-8 md:p-10 border border-slate-100">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center md:border-r border-slate-100 last:border-0">
+                    <div class="text-blue-500 mb-2 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg></div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tanggal</p>
+                    <h4 class="font-bold text-slate-800 text-sm md:text-base leading-tight">Sabtu, 26 September 2026</h4>
+                </div>
+                <div class="text-center md:border-r border-slate-100 last:border-0">
+                    <div class="text-blue-500 mb-2 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Waktu</p>
+                    <h4 class="font-bold text-slate-800 text-sm md:text-base leading-tight">15.00 WIB - Selesai</h4>
+                </div>
+                <div class="text-center md:border-r border-slate-100 last:border-0 px-2">
+                    <div class="text-blue-500 mb-2 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg></div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Lokasi</p>
+                    <h4 class="font-bold text-slate-800 text-sm md:text-base leading-tight mb-2">Jakarta International Velodrome, Jakarta</h4>
+                    <a href="https://maps.app.goo.gl/4WSpGbVYEKGM6E8G7" target="_blank" class="text-[10px] text-blue-600 font-bold hover:underline">LIHAT GOOGLE MAPS →</a>
+                </div>
+                <div class="text-center last:border-0">
+                    <div class="text-blue-500 mb-2 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Dresscode</p>
+                    <h4 class="font-bold text-slate-800 text-sm md:text-base leading-tight">Casual: Putih & Jeans</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="agenda" class="py-24 bg-slate-50">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif font-bold text-blue-950 mb-4">Agenda Acara</h2>
+                <div class="w-20 h-1.5 bg-yellow-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="timeline-container">
+                <div class="relative mb-12 md:flex md:justify-between items-center w-full">
+                    <div class="hidden md:block w-5/12 text-right pr-12">
+                        <h4 class="font-bold text-blue-950 text-xl">Open Gate & Registrasi</h4>
+                        <p class="text-slate-500 text-sm mt-2">Pembagian atribut reuni dan ramah tamah di lobby utama.</p>
+                    </div>
+                    <div class="absolute left-0 md:left-1/2 md:-ml-8 z-10 bg-blue-900 text-white w-16 h-16 rounded-full flex items-center justify-center font-bold shadow-lg border-4 border-white">
+                        15:00
+                    </div>
+                    <div class="ml-24 md:ml-0 md:w-5/12 pl-12 md:pl-12">
+                        <div class="md:hidden">
+                            <h4 class="font-bold text-blue-950 text-lg">Open Gate & Registrasi</h4>
+                            <p class="text-slate-500 text-sm mt-1">Pembagian atribut reuni dan ramah tamah.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative mb-12 md:flex md:justify-between items-center w-full flex-row-reverse">
+                    <div class="hidden md:block w-5/12 text-left pl-12">
+                        <h4 class="font-bold text-blue-950 text-xl">Gala Lintas Generasi</h4>
+                        <p class="text-slate-500 text-sm mt-2">Talkshow inspiratif, hiburan angkatan, dan apresiasi guru di Main Ballroom.</p>
+                    </div>
+                    <div class="absolute left-0 md:left-1/2 md:-ml-8 z-10 bg-blue-600 text-white w-16 h-16 rounded-full flex items-center justify-center font-bold shadow-lg border-4 border-white">
+                        19:00
+                    </div>
+                    <div class="ml-24 md:ml-0 md:w-5/12 pr-12 md:pr-12 text-right">
+                        <div class="md:hidden text-left">
+                            <h4 class="font-bold text-blue-950 text-lg">Gala Lintas Generasi</h4>
+                            <p class="text-slate-500 text-sm mt-1">Talkshow inspiratif dan apresiasi guru.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative mb-12 md:flex md:justify-between items-center w-full">
+                    <div class="hidden md:block w-5/12 text-right pr-12">
+                        <h4 class="font-bold text-blue-950 text-xl">Peak Show</h4>
+                        <p class="text-slate-500 text-sm mt-2">Suguhan musik lintas generasi.</p>
+                    </div>
+                    <div class="absolute left-0 md:left-1/2 md:-ml-8 z-10 bg-blue-400 text-white w-16 h-16 rounded-full flex items-center justify-center font-bold shadow-lg border-4 border-white">
+                        21:00
+                    </div>
+                    <div class="ml-24 md:ml-0 md:w-5/12 pl-12 md:pl-12">
+                        <div class="md:hidden">
+                            <h4 class="font-bold text-blue-950 text-lg">Peak Show</h4>
+                            <p class="text-slate-500 text-sm mt-1">Suguhan musik lintas generasi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="galeri" class="py-24 bg-white overflow-hidden text-center">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-4xl font-serif font-bold text-blue-950 mb-4">Galeri Kenangan</h2>
+            <div class="w-16 h-1 bg-yellow-500 mx-auto mb-10 rounded-full"></div>
+            
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><video autoplay muted loop playsinline><source src="https://res.cloudinary.com/dnreugeqy/video/upload/demo_o96axb.mp4" type="video/mp4"></video></div>
+                    <div class="swiper-slide"><img src="https://thumbs2.imgbox.com/7e/e9/yPV8z0X6_t.jpg" /></div>
+                    <div class="swiper-slide"><img src="https://thumbs2.imgbox.com/aa/46/sJYs6vpN_t.jpg" /></div>
+                    <div class="swiper-slide"><img src="https://thumbs2.imgbox.com/4f/e2/x3eVA8iL_t.jpg" /></div>
+                    <div class="swiper-slide"><img src="https://thumbs2.imgbox.com/2d/7b/ZsUBXysc_t.jpg" /></div>
+					<div class="swiper-slide"><img src="https://thumbs2.imgbox.com/5b/ec/b3qGgI9C_t.jpg" /></div>
+					<div class="swiper-slide"><img src="https://thumbs2.imgbox.com/4b/ef/flL47Hr1_t.jpg" /></div>
+					<div class="swiper-slide"><img src="https://thumbs2.imgbox.com/c8/b0/PjEBABoD_t.jpg" /></div>
+					<div class="swiper-slide"><img src="https://thumbs2.imgbox.com/2c/ad/gsI9kzbf_t.jpg" /></div>
+					<div class="swiper-slide"><img src="https://thumbs2.imgbox.com/f7/f1/9igBYlKR_t.jpg" /></div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="daftar" class="py-24 bg-slate-50">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid md:grid-cols-5 bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100">
+                <div class="md:col-span-2 p-12 gradient-bg text-white">
+                    <h2 class="text-3xl font-serif font-bold mb-8 italic">Pendaftaran</h2>
+                    <div class="space-y-8">
+                        <div>
+                            <p class="text-xs uppercase opacity-60 mb-2 font-bold tracking-widest text-blue-100">Transfer</p>
+                            <p class="text-2xl font-bold tracking-widest mb-1">000-000-0000</p>
+                            <p class="text-sm opacity-80 font-medium">Bank BCA a.n IKATISA 31</p>
+                        </div>
+                        <div class="bg-white/10 p-6 rounded-2xl border border-white/10">
+                            <p class="font-bold mb-3 text-yellow-400 text-sm uppercase">Daftar Paket:</p>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex justify-between border-b border-white/10 pb-2"><span>Paket Silver</span> <span>Rp 200.000</span></li>
+                                <li class="flex justify-between border-b border-white/10 pb-2"><span>Paket Gold</span> <span>Rp 300.000</span></li>
+                                <li class="flex justify-between text-yellow-400 font-bold"><span>Paket Donatur</span> <span>Suka Rela</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-3 p-12">
+                    <form id="formReuni" class="space-y-6" novalidate>
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-tight">Nama Lengkap</label>
+                            <input type="text" name="Nama" id="nama" required class="w-full px-5 py-4 rounded-xl border border-slate-200 focus:border-blue-500 outline-none bg-slate-50 transition-all">
+                        </div>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-tight">Angkatan</label>
+                                <input type="number" name="Angkatan" id="angkatan" required placeholder="Contoh: 1998" class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-tight">Pilih Paket</label>
+                                <select name="Paket" id="paket" required class="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 outline-none cursor-pointer">
+                                    <option value="" disabled selected>Pilih Paket...</option>
+                                    <option value="Silver">Paket Silver</option>
+                                    <option value="Gold">Paket Gold</option>
+                                    <option value="Donatur">Paket Donatur</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-tight">Nomor WhatsApp</label>
+                            <input type="tel" name="WhatsApp" id="whatsapp" required placeholder="08xxxxxxxx" class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all">
+                        </div>
+                        <button type="submit" id="tombolSubmit" class="w-full gradient-bg text-white font-bold py-5 rounded-2xl shadow-xl hover:shadow-blue-200/50 transition-all transform hover:-translate-y-1 text-lg flex items-center justify-center">
+                            <span id="btnText">Daftar & Konfirmasi Sekarang</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#101a35] text-white py-20 px-6">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
+            <div>
+                <h2 class="text-2xl font-serif font-bold mb-6 uppercase tracking-wider">31 Reconnect</h2>
+                <p class="text-slate-400 leading-relaxed italic max-w-md">
+                    "Menghubungkan masa lalu, membangun masa depan. Mari kita tunjukkan kekuatan persaudaraan alumni kita."
+                </p>
+            </div>
+            <div class="md:text-right">
+                <h3 class="font-bold text-lg mb-4">Sekretariat Panitia</h3>
+                <p class="text-slate-400 italic mb-2">Menza, SMAN 31 Jakarta</p>
+                <p class="text-slate-400">Email: <a href="mailto:info@31reconnect.com" class="hover:text-blue-400 transition underline">info@31reconnect.com</a></p>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto border-t border-slate-700 mt-16 pt-8 text-center text-blue-400 text-sm font-medium">
+            <p>© 2026 31Reconnect. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <div id="modalBerhasil">
+        <div class="bg-white p-10 rounded-[2.5rem] max-w-sm w-full mx-4 text-center shadow-2xl">
+            <div class="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+            </div>
+            <h3 class="text-3xl font-bold text-slate-900 mb-3 font-serif italic">Berhasil!</h3>
+            <p class="text-slate-500 mb-8 text-sm">Data Anda telah kami terima. Selesaikan langkah terakhir dengan konfirmasi pembayaran ke WA panitia.</p>
+            <button onclick="lanjutKeWA()" class="w-full gradient-bg text-white font-bold py-4 rounded-2xl shadow-lg hover:brightness-110 transition-all">Konfirmasi Via WhatsApp</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        const config = {
+            scriptURL: 'https://script.google.com/macros/s/AKfycbxW8vDSSuhEpvwyjIW4F7s3UPiP-Cnxt1cwPlWKN2i6MlZqf-kd_3xCoZ2NRePzM5kK/exec', 
+            waPanitia: '6287776669897'
+        };
+
+        new Swiper(".mySwiper", {
+            effect: "coverflow", grabCursor: true, centeredSlides: true,
+            slidesPerView: "auto", loop: true, autoplay: { delay: 3000 },
+            coverflowEffect: { rotate: 20, stretch: 0, depth: 100, modifier: 1, slideShadows: true },
+            pagination: { el: ".swiper-pagination", clickable: true },
+        });
+
+        const form = document.getElementById('formReuni');
+        const btnSubmit = document.getElementById('tombolSubmit');
+        const btnText = document.getElementById('btnText');
+        const modal = document.getElementById('modalBerhasil');
+        let cacheData = {};
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nama = document.getElementById('nama');
+            const angkatan = document.getElementById('angkatan');
+            const paket = document.getElementById('paket');
+            const whatsapp = document.getElementById('whatsapp');
+            let valid = true;
+            
+            [nama, angkatan, whatsapp].forEach(i => {
+                if (!i.value.trim()) { i.classList.add('border-red-400'); valid = false; }
+                else { i.classList.remove('border-red-400'); }
+            });
+
+            if (!paket.value) { paket.classList.add('border-red-400'); valid = false; }
+            else { paket.classList.remove('border-red-400'); }
+
+            if (!valid) return alert("Mohon lengkapi seluruh data dan pilih paket Anda.");
+
+            btnSubmit.disabled = true;
+            btnText.innerHTML = '<span class="spinner"></span> Mengirim...';
+
+            cacheData = {
+                nama: nama.value,
+                angkatan: angkatan.value,
+                paket: paket.value
+            };
+
+            fetch(config.scriptURL, { method: 'POST', body: new FormData(form), mode: 'no-cors' })
+            .then(() => {
+                modal.style.display = 'flex';
+                form.reset();
+                btnSubmit.disabled = false;
+                btnText.innerHTML = 'Daftar & Konfirmasi Sekarang';
+            })
+            .catch(() => {
+                alert("Gangguan koneksi.");
+                btnSubmit.disabled = false;
+                btnText.innerHTML = 'Daftar & Konfirmasi Sekarang';
+            });
+        });
+
+        function lanjutKeWA() {
+            const msg = `Halo Panitia Reuni,\n\nSaya telah mendaftar melalui website:\n*Nama:* ${cacheData.nama}\n*Angkatan:* ${cacheData.angkatan}\n*Paket:* ${cacheData.paket}\n\nMohon informasi langkah selanjutnya untuk verifikasi pembayaran. Terima kasih!`;
+            window.open(`https://wa.me/${config.waPanitia}?text=${encodeURIComponent(msg)}`, '_blank');
+            modal.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+
