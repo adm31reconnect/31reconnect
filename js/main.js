@@ -1,33 +1,45 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Logika Tombol Masuk (Pengganti onclick)
+
+    // ===============================
+    // 1. TOMBOL MASUK WEBSITE (FIX)
+    // ===============================
     const btnMasuk = document.getElementById('btnMasukWeb');
     const overlay = document.getElementById('videoOverlay');
     const video = document.getElementById('teaserVideo');
 
     if (btnMasuk) {
         btnMasuk.addEventListener('click', () => {
+
             if (overlay) {
                 overlay.classList.add('overlay-hidden');
-            }
-            
-            // Aktifkan scroll kembali
-            document.body.classList.remove('modal-open');
-            
-            // Pause video landing setelah fade out
-            if (video) {
+
+                // 🔥 PENTING: hapus overlay total setelah animasi
                 setTimeout(() => {
-                    video.pause();
-                }, 800);
+                    overlay.remove();
+                }, 900);
+            }
+
+            // aktifkan scroll kembali
+            document.body.classList.remove('modal-open');
+
+            if (video) {
+                video.pause();
             }
         });
     }
 
-    // 2. Konfigurasi Spreadsheet
+
+    // ===============================
+    // 2. KONFIG GOOGLE SHEET
+    // ===============================
     const config = {
         scriptURL: 'https://script.google.com/macros/s/AKfycbxW8vDSSuhEpvwyjIW4F7s3UPiP-Cnxt1cwPlWKN2i6MlZqf-kd_3xCoZ2NRePzM5kK/exec'
     };
 
-    // 3. Inisialisasi Galeri (Swiper)
+
+    // ===============================
+    // 3. SWIPER GALERI
+    // ===============================
     new Swiper('.mySwiper', {
         effect: 'coverflow',
         grabCursor: true,
@@ -35,11 +47,23 @@ document.addEventListener('DOMContentLoaded', () => {
         slidesPerView: 'auto',
         loop: true,
         autoplay: { delay: 3000 },
-        coverflowEffect: { rotate: 20, stretch: 0, depth: 100, modifier: 1, slideShadows: true },
-        pagination: { el: '.swiper-pagination', clickable: true }
+        coverflowEffect: {
+            rotate: 20,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+        }
     });
 
-    // 4. Handle Form Submission
+
+    // ===============================
+    // 4. FORM SUBMIT
+    // ===============================
     const form = document.getElementById('formReuni');
     const btnSubmit = document.getElementById('tombolSubmit');
     const btnText = document.getElementById('btnText');
@@ -48,9 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (form) {
         form.addEventListener('submit', e => {
             e.preventDefault();
+
             const nama = document.getElementById('nama');
             const angkatan = document.getElementById('angkatan');
             const whatsapp = document.getElementById('whatsapp');
+
             let valid = true;
 
             [nama, angkatan, whatsapp].forEach(i => {
@@ -75,22 +101,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: new FormData(form),
                 mode: 'no-cors'
             })
-            .then(() => {
-                modal.style.display = 'flex';
-                form.reset();
-                btnSubmit.disabled = false;
-                btnText.innerHTML = 'Saya Alumni SMAN 31 Jakarta';
-            })
-            .catch(() => {
-                alert('Terjadi gangguan koneksi, silakan coba lagi.');
-                btnSubmit.disabled = false;
-                btnText.innerHTML = 'Saya Alumni SMAN 31 Jakarta';
-            });
+                .then(() => {
+                    modal.style.display = 'flex';
+                    form.reset();
+                })
+                .catch(() => {
+                    alert('Terjadi gangguan koneksi, silakan coba lagi.');
+                })
+                .finally(() => {
+                    btnSubmit.disabled = false;
+                    btnText.innerHTML = 'Saya Alumni SMAN 31 Jakarta';
+                });
         });
     }
 
-    // Fungsi tutup modal juga dipasang secara eksplisit jika perlu
-    window.tutupModal = function() {
+    window.tutupModal = function () {
         if (modal) modal.style.display = 'none';
     };
 });
