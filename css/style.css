@@ -61,7 +61,9 @@ body {
 .overlay-hidden {
     opacity: 0 !important;
     visibility: hidden !important;
+    pointer-events: none !important; /* 🔥 FIX: biar tidak blok klik */
 }
+
 body.modal-open {
     overflow: hidden; /* Mengunci scroll saat video muncul */
 }
