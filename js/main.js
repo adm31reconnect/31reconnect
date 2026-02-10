@@ -1,29 +1,33 @@
-// Pindahkan fungsi ini ke luar DOMContentLoaded agar terbaca secara global
-window.masukWeb = function() {
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Logika Tombol Masuk (Pengganti onclick)
+    const btnMasuk = document.getElementById('btnMasukWeb');
     const overlay = document.getElementById('videoOverlay');
     const video = document.getElementById('teaserVideo');
-    
-    if (overlay) {
-        overlay.classList.add('overlay-hidden');
-    }
-    
-    // Aktifkan scroll kembali
-    document.body.classList.remove('modal-open');
-    
-    // Pause video landing setelah fade out untuk hemat resource
-    if (video) {
-        setTimeout(() => {
-            video.pause();
-        }, 800);
-    }
-};
 
-document.addEventListener('DOMContentLoaded', () => {
+    if (btnMasuk) {
+        btnMasuk.addEventListener('click', () => {
+            if (overlay) {
+                overlay.classList.add('overlay-hidden');
+            }
+            
+            // Aktifkan scroll kembali
+            document.body.classList.remove('modal-open');
+            
+            // Pause video landing setelah fade out
+            if (video) {
+                setTimeout(() => {
+                    video.pause();
+                }, 800);
+            }
+        });
+    }
+
+    // 2. Konfigurasi Spreadsheet
     const config = {
         scriptURL: 'https://script.google.com/macros/s/AKfycbxW8vDSSuhEpvwyjIW4F7s3UPiP-Cnxt1cwPlWKN2i6MlZqf-kd_3xCoZ2NRePzM5kK/exec'
     };
 
-    // --- Inisialisasi Galeri (Swiper) ---
+    // 3. Inisialisasi Galeri (Swiper)
     new Swiper('.mySwiper', {
         effect: 'coverflow',
         grabCursor: true,
@@ -35,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pagination: { el: '.swiper-pagination', clickable: true }
     });
 
-    // --- Handle Form Submission ---
+    // 4. Handle Form Submission
     const form = document.getElementById('formReuni');
     const btnSubmit = document.getElementById('tombolSubmit');
     const btnText = document.getElementById('btnText');
@@ -85,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Fungsi tutup modal juga dipasang secara eksplisit jika perlu
     window.tutupModal = function() {
         if (modal) modal.style.display = 'none';
     };
