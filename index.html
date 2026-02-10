@@ -10,57 +10,25 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
-    <style>
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        .font-serif { font-family: 'Playfair Display', serif; }
-        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
-        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
-        
-        /* Swiper Custom Style */
-        .swiper { width: 100%; padding-top: 40px; padding-bottom: 60px; }
-        .swiper-slide {
-            background-position: center; background-size: cover;
-            width: 280px; height: 380px; border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-        @media (min-width: 768px) { .swiper-slide { width: 320px; height: 450px; } }
-        .swiper-slide img, .swiper-slide video { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; }
-        .swiper-pagination-bullet-active { background: #1e3a8a !important; }
-
-        /* Timeline Styles */
-        .timeline-container { position: relative; }
-        .timeline-container::after {
-            content: ''; position: absolute; width: 2px; background-color: #e2e8f0;
-            top: 0; bottom: 0; left: 50%; margin-left: -1px;
-        }
-        @media screen and (max-width: 768px) {
-            .timeline-container::after { left: 31px; }
-        }
-
-        /* Spinner Loading */
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3); border-radius: 50%;
-            border-top: 3px solid white; width: 20px; height: 20px;
-            animation: spin 1s linear infinite; display: inline-block;
-            margin-right: 10px; vertical-align: middle;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        #modalBerhasil {
-            display: none; position: fixed; z-index: 100; inset: 0;
-            background: rgba(0, 0, 0, 0.75); align-items: center; justify-content: center; backdrop-filter: blur(4px);
-        }
-
-        .float-wa {
-            position: fixed; width: 60px; height: 60px; bottom: 40px; right: 40px;
-            background-color: #25d366; color: #FFF; border-radius: 50px;
-            text-align: center; font-size: 30px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-            z-index: 100; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;
-        }
-        .float-wa:hover { transform: scale(1.1); background-color: #128c7e; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="bg-slate-50 text-slate-800 modal-open">
+
+    <div id="videoOverlay" class="fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden">
+        <video id="teaserVideo" autoplay muted loop playsinline class="absolute min-w-full min-h-full object-cover opacity-60">
+            <source src="https://res.cloudinary.com/dnreugeqy/video/upload/v1770716648/teaser_iytpna.mp4" type="video/mp4">
+        </video>
+
+        <div class="relative z-10 text-center px-4">
+            <img src="https://upload.wikimedia.org/wikipedia/id/8/84/SMA_31_Jakarta.jpg" alt="Logo" class="h-20 md:h-28 mx-auto mb-8 drop-shadow-2xl">
+            <h2 class="text-white text-3xl md:text-5xl font-serif mb-4 drop-shadow-md italic leading-tight">Siap untuk kembali pulang?</h2>
+            <p class="text-blue-100 mb-10 max-w-md mx-auto font-light text-sm md:text-base">Ketuk tombol di bawah untuk masuk ke beranda reuni.</p>
+            
+            <button onclick="masukWeb()" class="bg-white text-blue-900 font-bold px-12 py-4 rounded-full shadow-2xl hover:bg-yellow-400 transition-all transform hover:scale-105 duration-300 uppercase tracking-widest text-xs md:text-sm">
+                Masuk Ke Website
+            </button>
+        </div>
+    </div>
 
     <a href="https://wa.me/6285715339897" target="_blank" class="float-wa">
         <i class="fab fa-whatsapp"></i>
@@ -68,15 +36,19 @@
 
     <nav class="sticky top-0 z-50 glass border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-center md:justify-between h-20 items-center">
+            <div class="flex justify-between h-20 items-center">
                 <div class="flex-shrink-0 flex items-center">
-                    <img src="https://images2.imgbox.com/c9/99/pd4t4jxS_o.png" alt="31 Reconnect Logo" class="h-16 md:h-20 w-auto object-contain">
+                    <img src="https://upload.wikimedia.org/wikipedia/id/8/84/SMA_31_Jakarta.jpg" alt="31 Reconnect Logo" class="h-14 md:h-18 w-auto object-contain">
                 </div>
                 
                 <div class="hidden md:flex flex-1 justify-center items-center space-x-8 font-medium text-sm">
                     <a href="#beranda" class="hover:text-blue-600 transition">Beranda</a>
                     <a href="#agenda" class="hover:text-blue-600 transition">Agenda</a>
                     <a href="#galeri" class="hover:text-blue-600 transition">Galeri</a>
+                </div>
+
+                <div class="flex-shrink-0 flex items-center">
+                    <img src="https://images2.imgbox.com/c9/99/pd4t4jxS_o.png" alt="Partner Logo" class="h-12 md:h-16 w-auto object-contain">
                 </div>
             </div>
         </div>
@@ -91,7 +63,6 @@
             <p class="text-lg md:text-2xl mb-10 font-light text-blue-50 leading-relaxed italic">
                 "Dari masa kapur tulis hingga era digital. Saatnya pulang dan merajut kembali kisah yang sempat tertunda."
             </p>
-            <!-- <a href="#daftar" class="bg-yellow-500 hover:bg-yellow-600 text-blue-950 font-bold py-4 px-10 rounded-xl text-lg shadow-xl transition-transform hover:scale-105 inline-block">Mulai Merajut Kisah</a> -->
         </div>
     </section>
 
@@ -101,79 +72,50 @@
                 <div class="text-center md:border-r border-slate-100 last:border-0">
                     <div class="text-blue-500 mb-2 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg></div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tanggal</p>
-                    <h4 class="font-bold text-slate-800 text-sm md:text-base leading-tight">Sabtu, 26 September 2026</h4>
+                    <h4 class="font-bold text-slate-800 text-sm md:text-base leading-tight">Coming Soon</h4>
                 </div>
                 <div class="text-center md:border-r border-slate-100 last:border-0">
                     <div class="text-blue-500 mb-2 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Waktu</p>
-                    <h4 class="font-bold text-slate-800 text-sm md:text-base leading-tight">15.00 WIB - Selesai</h4>
+                    <h4 class="font-bold text-slate-800 text-sm md:text-base leading-tight">Coming Soon</h4>
                 </div>
                 <div class="text-center md:border-r border-slate-100 last:border-0 px-2">
                     <div class="text-blue-500 mb-2 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg></div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Lokasi</p>
-                    <h4 class="font-bold text-slate-800 text-sm md:text-base leading-tight mb-2">Jakarta International Velodrome, Jakarta</h4>
-                    <a href="https://maps.google.com" target="_blank" class="text-[10px] text-blue-600 font-bold hover:underline">LIHAT GOOGLE MAPS →</a>
+                    <h4 class="font-bold text-slate-800 text-sm md:text-base leading-tight mb-2">Coming Soon</h4>
                 </div>
                 <div class="text-center last:border-0">
                     <div class="text-blue-500 mb-2 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Dresscode</p>
-                    <h4 class="font-bold text-slate-800 text-sm md:text-base leading-tight">Casual: Putih & Jeans</h4>
+                    <h4 class="font-bold text-slate-800 text-sm md:text-base leading-tight">Coming Soon</h4>
                 </div>
             </div>
         </div>
     </section>
-
+	
     <section id="agenda" class="py-24 bg-slate-50">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-serif font-bold text-blue-950 mb-4">Agenda Acara</h2>
-                <div class="w-20 h-1.5 bg-yellow-500 mx-auto rounded-full"></div>
-            </div>
-            <div class="timeline-container">
-                <div class="relative mb-12 md:flex md:justify-between items-center w-full">
-                    <div class="hidden md:block w-5/12 text-right pr-12">
-                        <h4 class="font-bold text-blue-950 text-xl">Open Gate & Registrasi</h4>
-                        <p class="text-slate-500 text-sm mt-2">Pembagian atribut reuni dan ramah tamah di lobby utama.</p>
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center">
+                <h2 class="text-4xl md:text-6xl font-serif font-bold text-slate-900 mb-8 leading-tight">
+                    Reuni Akbar <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-blue-500">SMAN 31 Jakarta</span>
+                </h2>
+                <div class="w-16 h-1 bg-yellow-500 mx-auto mb-12 rounded-full"></div>
+                <div class="space-y-8">
+                    <div class="space-y-2">
+                        <p class="text-xl md:text-2xl text-slate-600 font-light italic">
+                            "Sesuatu sedang dipersiapkan untuk kita yang pernah satu seragam, satu cerita."
+                        </p>
                     </div>
-                    <div class="absolute left-0 md:left-1/2 md:-ml-8 z-10 bg-blue-900 text-white w-16 h-16 rounded-full flex items-center justify-center font-bold shadow-lg border-4 border-white">
-                        15:00
+                    <div class="py-6 border-y border-slate-200 inline-block px-10">
+                        <p class="text-slate-500 text-lg md:text-xl leading-relaxed">
+                            Masih ingat bel masuk pagi? Kantin yang selalu ramai? <br>
+                            Tahun ini, semua kenangan itu akan <span class="text-slate-900 font-semibold">hidup kembali.</span>
+                        </p>
                     </div>
-                    <div class="ml-24 md:ml-0 md:w-5/12 pl-12 md:pl-12">
-                        <div class="md:hidden">
-                            <h4 class="font-bold text-blue-950 text-lg">Open Gate & Registrasi</h4>
-                            <p class="text-slate-500 text-sm mt-1">Pembagian atribut reuni dan ramah tamah.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative mb-12 md:flex md:justify-between items-center w-full flex-row-reverse">
-                    <div class="hidden md:block w-5/12 text-left pl-12">
-                        <h4 class="font-bold text-blue-950 text-xl">Gala Lintas Generasi</h4>
-                        <p class="text-slate-500 text-sm mt-2">Talkshow inspiratif, hiburan angkatan, dan apresiasi guru di Main Ballroom.</p>
-                    </div>
-                    <div class="absolute left-0 md:left-1/2 md:-ml-8 z-10 bg-blue-600 text-white w-16 h-16 rounded-full flex items-center justify-center font-bold shadow-lg border-4 border-white">
-                        19:00
-                    </div>
-                    <div class="ml-24 md:ml-0 md:w-5/12 pr-12 md:pr-12 text-right">
-                        <div class="md:hidden text-left">
-                            <h4 class="font-bold text-blue-950 text-lg">Gala Lintas Generasi</h4>
-                            <p class="text-slate-500 text-sm mt-1">Talkshow inspiratif dan apresiasi guru.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative mb-12 md:flex md:justify-between items-center w-full">
-                    <div class="hidden md:block w-5/12 text-right pr-12">
-                        <h4 class="font-bold text-blue-950 text-xl">Peak Show</h4>
-                        <p class="text-slate-500 text-sm mt-2">Suguhan musik lintas generasi.</p>
-                    </div>
-                    <div class="absolute left-0 md:left-1/2 md:-ml-8 z-10 bg-blue-400 text-white w-16 h-16 rounded-full flex items-center justify-center font-bold shadow-lg border-4 border-white">
-                        21:00
-                    </div>
-                    <div class="ml-24 md:ml-0 md:w-5/12 pl-12 md:pl-12">
-                        <div class="md:hidden">
-                            <h4 class="font-bold text-blue-950 text-lg">Peak Show</h4>
-                            <p class="text-slate-500 text-sm mt-1">Suguhan musik lintas generasi.</p>
-                        </div>
-                    </div>
+                    <p class="text-yellow-500 text-2xl md:text-3xl font-bold italic mt-8">
+                            Tapi belum sekarang 😉
+                    </p>
                 </div>
             </div>
         </div>
@@ -185,7 +127,7 @@
             <div class="w-16 h-1 bg-yellow-500 mx-auto mb-10 rounded-full"></div>
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide"><video autoplay muted loop playsinline><source src="https://res.cloudinary.com/dnreugeqy/video/upload/demo_o96axb.mp4" type="video/mp4"></video></div>
+                    <div class="swiper-slide"><video autoplay muted loop playsinline><source src="https://res.cloudinary.com/dnreugeqy/video/upload/v1770716648/teaser_iytpna.mp4" type="video/mp4"></video></div>
                     <div class="swiper-slide"><img src="https://thumbs2.imgbox.com/7e/e9/yPV8z0X6_t.jpg" /></div>
                     <div class="swiper-slide"><img src="https://thumbs2.imgbox.com/aa/46/sJYs6vpN_t.jpg" /></div>
                     <div class="swiper-slide"><img src="https://thumbs2.imgbox.com/4f/e2/x3eVA8iL_t.jpg" /></div>
@@ -196,60 +138,30 @@
         </div>
     </section>
 
-    <!-- <section id="daftar" class="py-24 bg-slate-50"> -->
-        <!-- <div class="max-w-5xl mx-auto px-6"> -->
-            <!-- <div class="grid md:grid-cols-5 bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100"> -->
-                <!-- <div class="md:col-span-2 p-12 gradient-bg text-white"> -->
-                    <!-- <h2 class="text-3xl font-serif font-bold mb-8 italic">Pendaftaran</h2> -->
-                    <!-- <div class="space-y-8"> -->
-                        <!-- <div> -->
-                            <!-- <p class="text-xs uppercase opacity-60 mb-2 font-bold tracking-widest text-blue-100">Transfer</p> -->
-                            <!-- <p class="text-2xl font-bold tracking-widest mb-1">000-000-0000</p> -->
-                            <!-- <p class="text-sm opacity-80 font-medium">Bank BCA a.n IKATISA 31</p> -->
-                        <!-- </div> -->
-                        <!-- <div class="bg-white/10 p-6 rounded-2xl border border-white/10"> -->
-                            <!-- <p class="font-bold mb-3 text-yellow-400 text-sm uppercase">Daftar Paket:</p> -->
-                            <!-- <ul class="space-y-2 text-sm"> -->
-                                <!-- <li class="flex justify-between border-b border-white/10 pb-2"><span>Paket Silver</span> <span>Rp 200.000</span></li> -->
-                                <!-- <li class="flex justify-between border-b border-white/10 pb-2"><span>Paket Gold</span> <span>Rp 300.000</span></li> -->
-                                <!-- <li class="flex justify-between text-yellow-400 font-bold"><span>Paket Donatur</span> <span>Suka Rela</span></li> -->
-                            <!-- </ul> -->
-                        <!-- </div> -->
-                    <!-- </div> -->
-                <!-- </div> -->
-                <!-- <div class="md:col-span-3 p-12"> -->
-                    <!-- <form id="formReuni" class="space-y-6" novalidate> -->
-                        <!-- <div class="space-y-2"> -->
-                            <!-- <label class="block text-xs font-bold text-slate-500 uppercase tracking-tight">Nama Lengkap</label> -->
-                            <!-- <input type="text" name="Nama" id="nama" required class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all"> -->
-                        <!-- </div> -->
-                        <!-- <div class="grid grid-cols-2 gap-6"> -->
-                            <!-- <div class="space-y-2"> -->
-                                <!-- <label class="block text-xs font-bold text-slate-500 uppercase tracking-tight">Angkatan</label> -->
-                                <!-- <input type="number" name="Angkatan" id="angkatan" required placeholder="Contoh: 1998" class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all"> -->
-                            <!-- </div> -->
-                            <!-- <div class="space-y-2"> -->
-                                <!-- <label class="block text-xs font-bold text-slate-500 uppercase tracking-tight">Pilih Paket</label> -->
-                                <!-- <select name="Paket" id="paket" required class="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 outline-none cursor-pointer"> -->
-                                    <!-- <option value="" disabled selected>Pilih Paket...</option> -->
-                                    <!-- <option value="Silver">Paket Silver</option> -->
-                                    <!-- <option value="Gold">Paket Gold</option> -->
-                                    <!-- <option value="Donatur">Paket Donatur</option> -->
-                                <!-- </select> -->
-                            <!-- </div> -->
-                        <!-- </div> -->
-                        <!-- <div class="space-y-2"> -->
-                            <!-- <label class="block text-xs font-bold text-slate-500 uppercase tracking-tight">Nomor WhatsApp</label> -->
-                            <!-- <input type="tel" name="WhatsApp" id="whatsapp" required placeholder="08xxxxxxxx" class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all"> -->
-                        <!-- </div> -->
-                        <!-- <button type="submit" id="tombolSubmit" class="w-full gradient-bg text-white font-bold py-5 rounded-2xl shadow-xl transition-all transform hover:-translate-y-1 text-lg flex items-center justify-center"> -->
-                            <!-- <span id="btnText">Daftar & Konfirmasi Sekarang</span> -->
-                        <!-- </button> -->
-                    <!-- </form> -->
-                <!-- </div> -->
-            <!-- </div> -->
-        <!-- </div> -->
-    <!-- </section> -->
+    <section id="daftar" class="py-24 bg-slate-50">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100 p-8 md:p-12">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Daftar Minat Alumni</h2>
+                    <p class="text-slate-500">Isi data di bawah untuk masuk ke database resmi alumni SMAN 31.</p>
+                </div>
+                <form id="formReuni" class="space-y-6" novalidate>
+                    <div class="space-y-2">
+                        <input type="text" name="Nama" id="nama" placeholder="Nama Lengkap" required class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all focus:border-yellow-500">
+                    </div>
+                    <div class="space-y-2">
+                        <input type="number" name="Angkatan" id="angkatan" required placeholder="Angkatan (contoh: 2011)" class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all focus:border-yellow-500">
+                    </div>
+                    <div class="space-y-2">
+                        <input type="text" name="WhatsApp" id="whatsapp" required placeholder="Nomor WhatsApp" class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all focus:border-yellow-500">
+                    </div>
+                    <button type="submit" id="tombolSubmit" class="w-full bg-[#fbc02d] hover:bg-[#f9a825] text-slate-900 font-bold py-5 rounded-2xl shadow-xl transition-all transform hover:-translate-y-1 text-lg flex items-center justify-center">
+                        <span id="btnText">Saya Alumni SMAN 31 Jakarta</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
 
     <footer class="bg-[#101a35] text-white py-20 px-6">
         <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
@@ -260,18 +172,20 @@
                 </p>
             </div>
             
-            <div class="text-center"> <h3 class="font-bold text-lg mb-6">Ikuti Kami</h3>
-    <div class="flex justify-center space-x-6"> <a href="https://instagram.com/31reconnect/" target="_blank" class="text-3xl hover:text-pink-500 transition-all transform hover:scale-110">
-            <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://tiktok.com/@31reconnect" target="_blank" class="text-3xl hover:text-slate-200 transition-all transform hover:scale-110">
-            <i class="fab fa-tiktok"></i>
-        </a>
-        <a href="https://youtube.com/@31Reconnect" target="_blank" class="text-3xl hover:text-red-600 transition-all transform hover:scale-110">
-            <i class="fab fa-youtube"></i>
-        </a>
-    </div>
-</div>
+            <div class="text-left md:text-center"> 
+                <h3 class="font-bold text-lg mb-6">Ikuti Kami</h3>
+                <div class="flex justify-start md:justify-center space-x-6"> 
+                    <a href="https://instagram.com/31reconnect/" target="_blank" class="text-3xl hover:text-pink-500 transition-all transform hover:scale-110">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://tiktok.com/@31reconnect" target="_blank" class="text-3xl hover:text-slate-200 transition-all transform hover:scale-110">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="https://youtube.com/@31Reconnect" target="_blank" class="text-3xl hover:text-red-600 transition-all transform hover:scale-110">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
 
             <div class="md:text-right">
                 <h3 class="font-bold text-lg mb-4">Sekretariat Panitia</h3>
@@ -290,79 +204,12 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
             </div>
             <h3 class="text-3xl font-bold text-slate-900 mb-3 font-serif italic">Berhasil!</h3>
-            <p class="text-slate-500 mb-8 text-sm">Data Anda telah kami terima. Selesaikan langkah terakhir dengan konfirmasi pembayaran ke WA panitia.</p>
-            <button onclick="lanjutKeWA()" class="w-full gradient-bg text-white font-bold py-4 rounded-2xl shadow-lg hover:brightness-110 transition-all">Konfirmasi Via WhatsApp</button>
+            <p class="text-slate-600 mb-8 text-sm">Data Anda telah tersimpan ke dalam database alumni SMAN 31. Terima kasih atas partisipasinya!</p>
+            <button onclick="tutupModal()" class="w-full gradient-bg text-white font-bold py-4 rounded-2xl shadow-lg hover:brightness-110 transition-all">Selesai</button>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const config = {
-                scriptURL: 'https://script.google.com/macros/s/AKfycbxW8vDSSuhEpvwyjIW4F7s3UPiP-Cnxt1cwPlWKN2i6MlZqf-kd_3xCoZ2NRePzM5kK/exec',
-                waPanitia: '6287776669897'
-            };
-
-            new Swiper(".mySwiper", {
-                effect: "coverflow", grabCursor: true, centeredSlides: true,
-                slidesPerView: "auto", loop: true, autoplay: { delay: 3000 },
-                coverflowEffect: { rotate: 20, stretch: 0, depth: 100, modifier: 1, slideShadows: true },
-                pagination: { el: ".swiper-pagination", clickable: true },
-            });
-
-            const form = document.getElementById('formReuni');
-            const btnSubmit = document.getElementById('tombolSubmit');
-            const btnText = document.getElementById('btnText');
-            const modal = document.getElementById('modalBerhasil');
-            let cacheData = {};
-
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const nama = document.getElementById('nama');
-                const angkatan = document.getElementById('angkatan');
-                const paket = document.getElementById('paket');
-                const whatsapp = document.getElementById('whatsapp');
-                let valid = true;
-                
-                [nama, angkatan, whatsapp].forEach(i => {
-                    if (!i.value.trim()) { i.classList.add('border-red-400'); valid = false; }
-                    else { i.classList.remove('border-red-400'); }
-                });
-
-                if (!paket.value) { paket.classList.add('border-red-400'); valid = false; }
-                else { paket.classList.remove('border-red-400'); }
-
-                if (!valid) return alert("Mohon lengkapi seluruh data dan pilih paket Anda.");
-
-                btnSubmit.disabled = true;
-                btnText.innerHTML = '<span class="spinner"></span> Mengirim...';
-
-                cacheData = {
-                    nama: nama.value,
-                    angkatan: angkatan.value,
-                    paket: paket.value
-                };
-
-                fetch(config.scriptURL, { method: 'POST', body: new FormData(form), mode: 'no-cors' })
-                .then(() => {
-                    modal.style.display = 'flex';
-                    form.reset();
-                    btnSubmit.disabled = false;
-                    btnText.innerHTML = 'Daftar & Konfirmasi Sekarang';
-                })
-                .catch(() => {
-                    alert("Gangguan koneksi.");
-                    btnSubmit.disabled = false;
-                    btnText.innerHTML = 'Daftar & Konfirmasi Sekarang';
-                });
-            });
-
-            window.lanjutKeWA = function() {
-                const msg = `Halo Panitia Reuni,\n\nSaya telah mendaftar melalui website:\n*Nama:* ${cacheData.nama}\n*Angkatan:* ${cacheData.angkatan}\n*Paket:* ${cacheData.paket}\n\nMohon informasi langkah selanjutnya untuk verifikasi pembayaran. Terima kasih!`;
-                window.open(`https://wa.me/${config.waPanitia}?text=${encodeURIComponent(msg)}`, '_blank');
-                modal.style.display = 'none';
-            }
-        });
-    </script>
+    <script src="main.js"></script>
 </body>
 </html>
