@@ -6,7 +6,8 @@
     <title>31 Reconnect</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
@@ -139,29 +140,194 @@
     </section>
 
     <section id="daftar" class="py-24 bg-slate-50">
-        <div class="max-w-3xl mx-auto px-6">
-            <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100 p-8 md:p-12">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Daftar Minat Alumni</h2>
-                    <p class="text-slate-500">Isi data di bawah untuk masuk ke database resmi alumni SMAN 31.</p>
-                </div>
-                <form id="formReuni" class="space-y-6" novalidate>
-                    <div class="space-y-2">
-                        <input type="text" name="Nama" id="nama" placeholder="Nama Lengkap" required class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all focus:border-yellow-500">
-                    </div>
-                    <div class="space-y-2">
-                        <input type="number" name="Angkatan" id="angkatan" required placeholder="Angkatan (contoh: 2011)" class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all focus:border-yellow-500">
-                    </div>
-                    <div class="space-y-2">
-                        <input type="text" name="WhatsApp" id="whatsapp" required placeholder="Nomor WhatsApp" class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all focus:border-yellow-500">
-                    </div>
-                    <button type="submit" id="tombolSubmit" class="w-full bg-[#fbc02d] hover:bg-[#f9a825] text-slate-900 font-bold py-5 rounded-2xl shadow-xl transition-all transform hover:-translate-y-1 text-lg flex items-center justify-center">
-                        <span id="btnText">Saya Alumni SMAN 31 Jakarta</span>
-                    </button>
-                </form>
+    <div class="max-w-3xl mx-auto px-6">
+        <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100 p-8 md:p-12">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">Daftar Minat Alumni</h2>
+                <p class="text-slate-500">Isi data di bawah untuk masuk ke database resmi alumni SMAN 31.</p>
             </div>
+            <form id="formReuni" class="space-y-6" novalidate>
+    <div class="space-y-2">
+        <input type="text" name="Nama" id="nama" placeholder="Nama Lengkap" required class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all focus:border-yellow-500">
+    </div>
+    <div class="space-y-2">
+        <input type="number" name="Angkatan" id="angkatan" required placeholder="Angkatan (contoh: 2011)" class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all focus:border-yellow-500">
+    </div>
+    <div class="space-y-2">
+        <input type="text" name="WhatsApp" id="whatsapp" required placeholder="Nomor WhatsApp" class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all focus:border-yellow-500">
+    </div>
+
+    <div class="space-y-2">
+    <select name="Pekerjaan" id="pekerjaan" required
+        class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all focus:border-yellow-500">
+        
+        <option value="">-- Pilih Pekerjaan --</option>
+        <option>Akuntan</option>
+        <option>Anggota BPK</option>
+        <option>Anggota DPD</option>
+        <option>Anggota DPR-RI</option>
+        <option>Anggota DPRD Kabupaten / Kota</option>
+        <option>Anggota DPRD Propinsi</option>
+        <option>Anggota Kabinet / Kementerian</option>
+        <option>Anggota Lembaga Tinggi</option>
+        <option>Anggota Mahkamah Konstitusi</option>
+        <option>Apoteker</option>
+        <option>Arsitek</option>
+        <option>Artis</option>
+        <option>Asisten Ahli</option>
+        <option>Atlit</option>
+        <option>Belum / Tidak Bekerja</option>
+        <option>Biarawati</option>
+        <option>Bidan</option>
+        <option>Bupati</option>
+        <option>Buruh Harian Lepas</option>
+        <option>Buruh Nelayan / Perikanan</option>
+        <option>Buruh Peternakan</option>
+        <option>Buruh Tani / Perkebunan</option>
+        <option>Cheff</option>
+        <option>Dokter</option>
+        <option>Dosen</option>
+        <option>Duta Besar</option>
+        <option>Gubernur</option>
+        <option>Guru</option>
+        <option>Imam Masjid</option>
+        <option>Industri</option>
+        <option>Juru Masak</option>
+        <option>Karyawan BUMD</option>
+        <option>Karyawan BUMN</option>
+        <option>Karyawan Honorer</option>
+        <option>Karyawan Swasta</option>
+        <option>Kepala Desa</option>
+        <option>Kepolisian RI</option>
+        <option>Konsultan</option>
+        <option>Konstruksi</option>
+        <option>Manajer</option>
+        <option>Mekanik</option>
+        <option>Mengurus Rumah Tangga</option>
+        <option>Nelayan / Perikanan</option>
+        <option>Notaris</option>
+        <option>Operator</option>
+        <option>Paraji</option>
+        <option>Paranormal</option>
+        <option>Pastur</option>
+        <option>Pedagang</option>
+        <option>Pegawai Negeri Sipil</option>
+        <option>Pekerja Pengolahan, Kerajinan</option>
+        <option>Pelajar / Mahasiswa</option>
+        <option>Pelaut</option>
+        <option>Pembantu Rumah Tangga</option>
+        <option>Penata Busana</option>
+        <option>Penata Rambut</option>
+        <option>Penata Rias</option>
+        <option>Pendeta</option>
+        <option>Peneliti</option>
+        <option>Pengacara</option>
+        <option>Pensiunan</option>
+        <option>Penterjemah</option>
+        <option>Penyiar Radio</option>
+        <option>Penyiar Televisi</option>
+        <option>Perancang Busana</option>
+        <option>Perangkat Desa</option>
+        <option>Perawat</option>
+        <option>Perdagangan</option>
+        <option>Petani / Pekebun</option>
+        <option>Peternak</option>
+        <option>Pialang</option>
+        <option>Pilot</option>
+        <option>Presiden</option>
+        <option>Promotor Acara</option>
+        <option>Psikiater / Psikolog</option>
+        <option>Seniman</option>
+        <option>Sopir</option>
+        <option>Tabib</option>
+        <option>Teknisi</option>
+        <option>Tenaga Tata Usaha</option>
+        <option>Tentara Nasional Indonesia</option>
+        <option>Transportasi</option>
+        <option>Tukang Batu</option>
+        <option>Tukang Cukur</option>
+        <option>Tukang Gigi</option>
+        <option>Tukang Jahit</option>
+        <option>Tukang Kayu</option>
+        <option>Tukang Las / Pandai Besi</option>
+        <option>Tukang Listrik</option>
+        <option>Tukang Sol Sepatu</option>
+        <option>Ustadz / Mubaligh</option>
+        <option>Wakil Bupati</option>
+        <option>Wakil Gubernur</option>
+        <option>Wakil Presiden</option>
+        <option>Wakil Walikota</option>
+        <option>Walikota</option>
+        <option>Wartawan</option>
+        <option>Wiraswasta</option>
+        <option value="Lainnya">Lainnya</option>
+    </select>
+</div>
+
+<div id="wrapperLainnya" class="space-y-2 hidden">
+    <input type="text" id="pekerjaanLainnya"
+        placeholder="Sebutkan Pekerjaan Anda..."
+        class="w-full px-5 py-4 rounded-xl border border-yellow-400 outline-none bg-white transition-all">
+</div>
+
+
+    <div class="space-y-2">
+        <textarea name="Alamat" id="alamat" required placeholder="Alamat Domisili" rows="3" class="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none bg-slate-50 transition-all focus:border-yellow-500"></textarea>
+    </div>
+
+    <button type="submit" id="tombolSubmit" class="w-full bg-[#fbc02d] hover:bg-[#f9a825] text-slate-900 font-bold py-5 rounded-2xl shadow-xl transition-all transform hover:-translate-y-1 text-lg flex items-center justify-center">
+        <span id="btnText">Kirim</span>
+    </button>
+</form>
         </div>
-    </section>
+    </div>
+</section>
+
+<!-- ================= DASHBOARD PREMIUM ================= -->
+<section class="py-24 bg-slate-50">
+    <div class="max-w-6xl mx-auto px-6">
+        
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-serif font-bold text-slate-900 mb-4">
+                Statistik Alumni
+            </h2>
+            <div class="w-16 h-1 bg-yellow-500 mx-auto rounded-full"></div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-10">
+
+            <!-- Total Alumni -->
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 
+            flex items-center justify-center 
+            min-h-[300px] relative overflow-hidden">
+
+    <!-- Background soft decoration -->
+    <div class="absolute w-56 h-56 bg-blue-100 rounded-full blur-3xl opacity-40"></div>
+
+    <div class="relative text-center">
+        <h3 id="totalAlumni" class="text-6xl md:text-7xl font-bold text-blue-700 leading-none">
+            0
+        </h3>
+        <p class="text-slate-500 uppercase tracking-widest text-xs mt-4">
+            Total Alumni Terdaftar
+        </p>
+    </div>
+</div>
+
+            <!-- Top 5 Angkatan -->
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-8 md:col-span-2">
+                <p class="text-slate-400 uppercase tracking-widest text-xs mb-6 text-center">
+                    Top 5 Angkatan Terbanyak
+                </p>
+                <div class="relative w-full h-[300px] md:h-[350px]">
+                    <canvas id="chartAngkatan"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
 
     <footer class="bg-[#101a35] text-white py-20 px-6">
         <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
@@ -210,8 +376,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="./js/main.js"></script>
 </body>
 </html>
-
-
