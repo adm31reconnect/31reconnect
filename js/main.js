@@ -1,6 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // =====================================
+    // GA4 EVENT HELPER
+    // =====================================
+    function trackEvent(eventName, params = {}) {
+        if (typeof gtag !== "undefined") {
+            gtag('event', eventName, params);
+        }
+    }
+
+    // =====================================
     // 1. TOMBOL MASUK WEBSITE
     // =====================================
     const btnMasuk = document.getElementById('btnMasukWeb');
@@ -9,6 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnMasuk) {
         btnMasuk.addEventListener('click', () => {
+
+            // ✅ TRACK EVENT
+            trackEvent('enter_website', {
+                event_category: 'engagement',
+                event_label: 'Masuk Website Button'
+            });
+
             if (overlay) {
                 overlay.classList.add('overlay-hidden');
                 setTimeout(() => overlay.remove(), 900);
@@ -134,6 +150,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: formData
             })
             .then(() => {
+
+                // ✅ TRACK CONVERSION
+                trackEvent('generate_lead', {
+                    event_category: 'conversion',
+                    event_label: 'Daftar Alumni',
+                    angkatan: angkatan.value
+                });
+
                 modal.style.display = 'flex';
                 form.reset();
                 wrapperLainnya.classList.add('hidden');
@@ -149,103 +173,96 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-// =====================================
-// 6. DASHBOARD (TOP 5 ANGKATAN SAJA)
-// =====================================
-
-let chartAngkatanInstance = null;
-
-function loadDashboard() {
-
-    fetch(config.scriptURL + "?action=stats")
-        .then(res => res.json())
-        .then(data => {
-
-            const totalEl = document.getElementById("totalAlumni");
-            if (totalEl) {
-                totalEl.innerText = data.totalAlumni || 0;
-            }
-
-            const canvasAngkatan = document.getElementById("chartAngkatan");
-            if (!canvasAngkatan) return;
-
-            if (chartAngkatanInstance) {
-                chartAngkatanInstance.destroy();
-            }
-
-            const angkatanFiltered = data.angkatanStats
-                .filter(a => a.name.length === 4 && !isNaN(a.name))
-                .sort((a, b) => b.total - a.total)
-                .slice(0, 5);
-
-            const angkatanLabels = angkatanFiltered.map(a => a.name);
-            const angkatanValues = angkatanFiltered.map(a => a.total);
-
-            chartAngkatanInstance = new Chart(canvasAngkatan, {
-                type: 'bar',
-                data: {
-                    labels: angkatanLabels,
-                    datasets: [{
-                        data: angkatanValues,
-                        backgroundColor: '#1e3a8a',
-                        borderRadius: 12,
-                        barPercentage: 0.6,
-                        categoryPercentage: 0.6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout: {
-                        padding: { top: 30 }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: { enabled: false }
-                    },
-                    scales: {
-                        x: {
-                            grid: { display: false },
-                            ticks: {
-                                color: '#334155',
-                                font: {
-                                    size: 12,
-                                    weight: '600'
-                                }
-                            }
-                        },
-                        y: {
-                            display: false,
-                            grid: { display: false },
-                            beginAtZero: true
-                        }
-                    },
-                    animation: { duration: 1000 }
-                },
-                plugins: [{
-                    id: 'valueLabel',
-                    afterDatasetsDraw(chart) {
-                        const { ctx } = chart;
-                        ctx.save();
-                        chart.data.datasets[0].data.forEach((value, index) => {
-                            const meta = chart.getDatasetMeta(0);
-                            const bar = meta.data[index];
-                            ctx.fillStyle = '#0f172a';
-                            ctx.font = 'bold 14px Inter';
-                            ctx.textAlign = 'center';
-                            ctx.fillText(value, bar.x, bar.y - 10);
-                        });
-                    }
-                }]
+    // =====================================
+    // TRACK WHATSAPP
+    // =====================================
+    const btnWA = document.getElementById("btnWA");
+    if (btnWA) {
+        btnWA.addEventListener("click", () => {
+            trackEvent('click_whatsapp', {
+                event_category: 'contact',
+                event_label: 'Floating WA'
             });
-
-        })
-        .catch(err => {
-            console.log("Error dashboard:", err);
         });
-}
+    }
 
-setTimeout(loadDashboard, 500);
+    // =====================================
+    // TRACK SOCIAL MEDIA
+    // =====================================
+    ["btnIG", "btnTiktok", "btnYoutube"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener("click", () => {
+                trackEvent('click_social', {
+                    event_category: 'social',
+                    event_label: id
+                });
+            });
+        }
+    });
+
+    // =====================================
+    // 6. DASHBOARD
+    // =====================================
+    let chartAngkatanInstance = null;
+
+    function loadDashboard() {
+
+        fetch(config.scriptURL + "?action=stats")
+            .then(res => res.json())
+            .then(data => {
+
+                // ✅ TRACK DASHBOARD VIEW
+                trackEvent('view_dashboard_stats', {
+                    event_category: 'engagement'
+                });
+
+                const totalEl = document.getElementById("totalAlumni");
+                if (totalEl) {
+                    totalEl.innerText = data.totalAlumni || 0;
+                }
+
+                const canvasAngkatan = document.getElementById("chartAngkatan");
+                if (!canvasAngkatan) return;
+
+                if (chartAngkatanInstance) {
+                    chartAngkatanInstance.destroy();
+                }
+
+                const angkatanFiltered = data.angkatanStats
+                    .filter(a => a.name.length === 4 && !isNaN(a.name))
+                    .sort((a, b) => b.total - a.total)
+                    .slice(0, 5);
+
+                const angkatanLabels = angkatanFiltered.map(a => a.name);
+                const angkatanValues = angkatanFiltered.map(a => a.total);
+
+                chartAngkatanInstance = new Chart(canvasAngkatan, {
+                    type: 'bar',
+                    data: {
+                        labels: angkatanLabels,
+                        datasets: [{
+                            data: angkatanValues,
+                            backgroundColor: '#1e3a8a',
+                            borderRadius: 12,
+                            barPercentage: 0.6,
+                            categoryPercentage: 0.6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } }
+                    }
+                });
+
+            })
+            .catch(err => {
+                console.log("Error dashboard:", err);
+            });
+    }
+
+    setTimeout(loadDashboard, 500);
 
     // =====================================
     // 7. TUTUP MODAL
